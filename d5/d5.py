@@ -27,11 +27,21 @@ def parse_line(line):
     return None
 
 
-def move_stacks(stacks, num_stacks, source, dest):
-    for _ in range(num_stacks):
+def move_stacks(stacks, num_stacks, source, dest, part_two= False):
+    
+    if part_two:
         if stacks[source]:
-            box = stacks[source].pop()
-            stacks[dest].append(box)
+            # moving_boxes = stacks[source][: num_stacks]
+            moving_boxes = stacks[source][-num_stacks: ]
+            del stacks[source][-num_stacks: ] 
+            # stacks[dest] = moving_boxes + stacks[dest]
+            stacks[dest].extend(moving_boxes)
+    else: 
+        for _ in range(num_stacks):
+            if stacks[source]:
+                box = stacks[source].pop()
+                stacks[dest].append(box)
+    
     return
 
 with open(file_path, 'r') as f: 
@@ -39,9 +49,9 @@ with open(file_path, 'r') as f:
         parsed = parse_line(line)
         if parsed: 
             num_stacks, source, dest = parse_line(line)
-            move_stacks(stacks, num_stacks, source, dest)
+            move_stacks(stacks, num_stacks, source, dest, part_two= True)
 
-def part_one_answer(stacks):
+def return_answer(stacks):
     ans = []
     for stack in stacks:
         if stack: 
@@ -51,4 +61,4 @@ def part_one_answer(stacks):
     
     return ''.join(ans)
 
-print(part_one_answer(stacks))
+print(return_answer(stacks))
